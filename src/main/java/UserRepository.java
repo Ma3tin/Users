@@ -5,7 +5,7 @@ import java.sql.*;
 
 @ApplicationScoped
 public class UserRepository {
-    public void createUser(String fullName, String email, String hashedPassword) {
+    public Boolean createUser(String fullName, String email, String hashedPassword) {
         try (
                 Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/users?user=root&password=");
                 PreparedStatement preparedStatement = connection.prepareStatement("""
@@ -19,9 +19,9 @@ public class UserRepository {
             preparedStatement.setString(2, email);
             preparedStatement.setString(3, hashedPassword);
             preparedStatement.execute();
-
+            return true;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
 
